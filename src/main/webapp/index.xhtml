@@ -2,25 +2,47 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:p="http://primefaces.org/ui">
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
     <h:head>
-        <title>Facelet Title</title>
+        <title>EGAR TEST</title>
     </h:head>
     <h:body>
-        Hello from Facelets
-        <br />
         <h:link outcome="welcomePrimefaces" value="Страница приветствия Primefaces" />
+        <h:link outcome="products" value="Продукты" />
+        <p:commandButton value="test" actionListener="#{dtOrderList.test}" /> 
 
-        <h:form>
-            <h:panelGrid columns="4" cellpadding="5">
-                <h:outputLabel for="name" value="Name:" style="font-weight:bold" />
-                <p:inputText id="name" value="#{basicView.text}" />
-                <p:commandButton value="Submit" update="display" icon="ui-icon-check" />
-                <h:outputText id="display" value="#{basicView.text}" />
-                <p:commandButton id="myBtn" value="test" update="out1" actionListener="#{basicView.test}" />
-                <h:outputText id="out1" value="#{basicView.text}" />
-            </h:panelGrid>
-        </h:form>
+        <p:dataTable id="orderTable" var="order" value="#{dtOrderList.orders}">
+            <p:column headerText="№">
+                <h:outputText value="#{order.id}" />
+            </p:column>
+            <p:column headerText="Дата">
+                <h:outputText value="#{order.created}" />
+            </p:column>
+            <!--            <p:column style="width: 32px; text-align: center">
+                            <p:commandButton update=":form:productDetail" oncomplete="PF('productDialog').show()" icon="ui-icon-document" title="View">
+                                <f:setPropertyActionListener value="#{order}" target="#{dtOrderList.selected}" />
+                            </p:commandButton>
+                        </p:column>-->
+        </p:dataTable>
+        <p:commandButton value="Обновить" update=":orderTable" actionListener="#{dtOrderList.init()}" />
+        <!--        <p:dialog header="Продукт" widgetVar="productDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false">
+                    <h:form id="form">
+                        <p:outputPanel id="productDetail" style="text-align:center;">
+                            <p:panelGrid  columns="2" rendered="# {not empty dtProductList.selected}" columnClasses="label,value">
+                                <h:outputText value="№" /><h:outputText value="# {dtProductList.selected.id}" />
+                                <h:outputText value="Наименование" /><p:inputText id="productName" value="# {dtProductList.selected.name}" />
+                                <h:outputText value="Цена" /><p:inputText id="productPrice" value="# {dtProductList.selected.price}" />
+                            </p:panelGrid>
+                            <p:commandButton value="Сохранить" actionListener="# {dtProductList.saveSelected}" >
+                                <f:ajax event="click" onevent="productDialog.hide()" />
+                            </p:commandButton>
+                            <p:commandButton value="Отмена" >
+                                <f:ajax event="click" onevent="productDialog.hide()" />
+                            </p:commandButton> 
+                        </p:outputPanel>
+                    </h:form>
+                </p:dialog>-->
     </h:body>
 </html>
 

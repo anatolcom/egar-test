@@ -5,6 +5,7 @@
  */
 package ru.anatol.egar.test.dao;
 
+import java.util.List;
 import org.hibernate.Session;
 import ru.anatol.egar.test.HibernateUtil;
 
@@ -49,17 +50,12 @@ public abstract class AbstractDAO<T> {
      T find = em.find(entityClass, id);
      em.close();
      return find;
-     }
-
-     public List<T> findAll() {
-     EntityManager em = emf.createEntityManager();
-     //        CriteriaBuilder cb = getEntityManager().getCriteriaBuilder();
-     CriteriaBuilder cb = em.getCriteriaBuilder();
-     javax.persistence.criteria.CriteriaQuery cq = cb.createQuery();
-     cq.select(cq.from(entityClass));
-     //        return getEntityManager().createQuery(cq).getResultList();
-     List resultList = em.createQuery(cq).getResultList();
-     em.close();
-     return resultList;
      }*/
+    
+    public List<T> findAll() {
+        getSession().getTransaction().begin();
+        List<T> list = (List<T>) getSession().createCriteria(entityClass).list();
+        getSession().getTransaction().commit();
+        return list;
+    }
 }

@@ -31,9 +31,17 @@ public class DAO {
 
     public ProductDAO getProductDAO() {
         if (productDAO == null) {
-//            productDAO = new ProductDAO(entityManagerFactory);
             productDAO = new ProductDAO();
         }
         return productDAO;
+    }
+
+    private OrderDAO orderDAO;
+
+    public OrderDAO getOrderDAO() {
+        if (orderDAO == null) {
+            orderDAO = new OrderDAO();
+        }
+        return orderDAO;
     }
 }

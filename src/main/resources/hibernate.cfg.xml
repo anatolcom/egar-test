@@ -11,5 +11,6 @@
         <property name="hibernate.current_session_context_class">thread</property>
         
         <mapping class="ru.anatol.egar.test.entity.Product" />
+        <mapping class="ru.anatol.egar.test.entity.Order" />
     </session-factory>
 </hibernate-configuration>

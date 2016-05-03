@@ -1,0 +1,61 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:head>
+        <title>EGAR TEST</title>
+    </h:head>
+    <h:body>
+        <h:link outcome="index" value="Главная" />
+        <p:dataTable id="productTable" var="product" value="#{dtProductList.products}">
+            <!--            <p:column headerText="№">
+                            <h:outputText value="# {product.id}" />
+                        </p:column>-->
+            <p:column headerText="Наименование">
+                <h:outputText value="#{product.name}" />
+            </p:column>
+            <p:column headerText="Цена (р.)">
+                <h:outputText value="#{product.price}" />
+            </p:column>
+            <p:column style="width: 140px; text-align: center">
+                <p:panelGrid  columns="2">
+                    <p:commandButton update=":form:productDetail" oncomplete="PF('productDialog').show()" icon="ui-icon-pencil" title="View">
+                        <f:setPropertyActionListener value="#{product}" target="#{dtProductList.selected}" />
+                    </p:commandButton>
+                    <p:commandButton update=":productTable" icon="ui-icon-trash" actionListener="#{dtProductList.remove(product)}" >
+                        <p:confirm header="Удаление" message="Вы действительно хотите удалить?" icon="ui-icon-alert" />
+                    </p:commandButton>
+                </p:panelGrid>
+            </p:column>
+        </p:dataTable>
+        <p:commandButton value="Обновить" update=":productTable" actionListener="#{dtProductList.init()}" />
+        <p:commandButton value="Добавить" update=":form:productDetail" oncomplete="PF('productDialog').show()" icon="ui-icon-document" title="View">
+            <f:setPropertyActionListener value="#{dtProductList.newProduct()}" target="#{dtProductList.selected}" />
+        </p:commandButton>
+        <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+            <p:commandButton value="Да" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+            <p:commandButton value="Нет" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+        </p:confirmDialog>
+        <p:dialog header="Продукт" widgetVar="productDialog" modal="true" showEffect="fade" hideEffect="fade" resizable="false">
+            <h:form id="form">
+                <!--<p:outputPanel id="productDetail" style="text-align:center;">-->
+                <p:outputPanel id="productDetail">
+<!--                        <h:outputText value="№" /><h:outputText value="#{dtProductList.selected.id}" />-->
+                    <p:panelGrid  columns="2" rendered="#{not empty dtProductList.selected}" columnClasses="label,value">
+                        <h:outputText value="Наименование" /><p:inputText id="productName" value="#{dtProductList.selected.name}" />
+                        <h:outputText value="Цена (р.)" /><p:inputText id="productPrice" value="#{dtProductList.selected.price}" />
+                    </p:panelGrid>
+                    <p:commandButton value="Сохранить" actionListener="#{dtProductList.saveSelected}" >
+                        <f:ajax event="click" onevent="productDialog.hide()" />
+                    </p:commandButton>
+                    <p:commandButton value="Отмена" >
+                        <f:ajax event="click" onevent="productDialog.hide()" />
+                    </p:commandButton> 
+                </p:outputPanel>
+            </h:form>
+        </p:dialog>
+    </h:body>
+</html>
+
